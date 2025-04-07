@@ -34,6 +34,23 @@ function MyComponent() {
 }
 ```
 
+## Example Data
+
+Here's an example of the actual data structure for Argentina:
+
+```typescript
+{
+  name: "Argentina",
+  nameAr: "الأرجنتين",
+  timezone: "America/Argentina/Buenos_Aires",
+  flagCode: "AR",
+  prefix: "0",
+  callCode: "54",
+  phoneMax: 10,
+  phoneMin: 10
+}
+```
+
 ### Search by Specific Criteria
 
 ```jsx
@@ -72,7 +89,7 @@ import { useCountry } from "react-country-hook";
 function MyComponent() {
   // Using default country by name
   const countryWithDefault = useCountry({
-    timezone: "Asia/Baghdad",
+    default: "Asia/Baghdad",
   });
 
   // Using default country by flag code

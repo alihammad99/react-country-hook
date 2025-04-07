@@ -1,6 +1,6 @@
 {
   "name": "react-country-hook",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A React.js Hook that provides country information for visitors",
   "main": "build/index.min.js",
   "types": "build/index.d.ts",
