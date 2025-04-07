@@ -59,7 +59,7 @@ function MyComponent() {
 
 ### Using Default Country
 
-You can specify a default country that will be used if no country is found matching the search criteria. The default can be specified using any of these values:
+You can specify a default country that will be used if no country is found matching the auto search criteria. The default can be specified using any of these values:
 
 - Country name (in English or Arabic)
 - Call code
@@ -77,7 +77,6 @@ function MyComponent() {
 
   // Using default country by flag code
   const countryWithDefaultFlag = useCountry({
-    name: "NonExistentCountry",
     default: "US",
   });
 }
@@ -110,7 +109,6 @@ interface PropsType {
   nameAr?: string;
   timezone?: string;
   flagCode?: string;
-  prefix?: string;
   callCode?: string;
   default?: string;
 }

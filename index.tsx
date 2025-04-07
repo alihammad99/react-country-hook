@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { CountryType, PropsType } from "./types";
 import { phoneCodes } from "./data";
 
-const initial = {
+const DEFAULT_COUNTRY: CountryType = {
   name: "",
   nameAr: "",
   timezone: "",
@@ -13,54 +13,66 @@ const initial = {
   phoneMin: 9,
 };
 
-export const useCountry = (props?: PropsType) => {
-  const [data, setData] = useState<CountryType>(initial);
+export const useCountry = (props?: PropsType): CountryType => {
+  const [data, setData] = useState<CountryType>(DEFAULT_COUNTRY);
 
   useEffect(() => {
-    const item = find(props || undefined);
-    setData(item || initial);
+    try {
+      const item = find(props);
+      setData(item || DEFAULT_COUNTRY);
+    } catch (error) {
+      console.error("useCountry: Error in finding country,", error);
+      setData(DEFAULT_COUNTRY);
+    }
   }, [props]);
 
   return data;
 };
 
 const find = (data?: PropsType): CountryType | null => {
-  let item = null;
-  if (!data || data?.default) {
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  try {
+    if (!data || data?.default) {
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      return (
+        phoneCodes.find((item) => item.timezone === timeZone) ||
+        handleDefault(data?.default || "") ||
+        null
+      );
+    }
 
-    item =
-      phoneCodes.find((item: CountryType) => item.timezone === timeZone) ||
-      handleDefault(data?.default || "");
-  } else {
     const key = Object.keys(data)[0];
-    // Type assertion to ensure key is a valid property
-    item = phoneCodes.find(
-      (item: CountryType) =>
-        item[key as keyof typeof item] === data[key as keyof typeof data]
-    );
-  }
+    if (!key) return null;
 
-  if (!item && !data?.default) {
-    console.warn("Country not found at useCountry");
+    const item = phoneCodes.find(
+      (item) => item[key as keyof CountryType] === data[key as keyof PropsType]
+    );
+
+    if (!item && !data?.default) {
+      console.warn("useCountry: Country not found");
+      return null;
+    }
+
+    return item || (data.default ? handleDefault(data.default) : null) || null;
+  } catch (error) {
+    console.error("useCountry: Error in finding country:", error);
     return null;
   }
-
-  if (!item && data?.default) {
-    item = handleDefault(data.default);
-  }
-
-  return { ...item } as CountryType;
 };
 
-const handleDefault = (value: string) => {
+const handleDefault = (value: string): CountryType | null => {
   if (!value) return null;
-  return phoneCodes.find(
-    (item: CountryType) =>
-      item?.name === value ||
-      item?.nameAr === value ||
-      item?.callCode === value ||
-      item?.timezone === value ||
-      item?.flagCode === value
+
+  const searchFields: (keyof CountryType)[] = [
+    "name",
+    "nameAr",
+    "callCode",
+    "timezone",
+    "flagCode",
+  ];
+
+  return (
+    phoneCodes.find((item) =>
+      searchFields.some((field) => item[field] === value)
+    ) || null
   );
 };

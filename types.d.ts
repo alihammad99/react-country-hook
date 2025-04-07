@@ -3,7 +3,6 @@ export type PropsType = {
   nameAr?: string;
   timezone?: string;
   flagCode?: string;
-  prefix?: string;
   callCode?: string;
   default?: string;
 };
