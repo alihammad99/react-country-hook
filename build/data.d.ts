@@ -1,2 +1,2 @@
-import { DataType } from "./types";
-export declare const phoneCodes: DataType[];
+import { CountryType } from "./types";
+export declare const phoneCodes: CountryType[];
