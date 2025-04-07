@@ -1,2 +1,2 @@
 import { DataType, FindProps } from "./types";
-export declare const useCountry: (props?: FindProps) => DataType | null;
+export declare const useCountry: (props?: FindProps) => DataType;

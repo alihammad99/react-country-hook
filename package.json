@@ -1,12 +1,13 @@
 {
   "name": "react-country-hook",
-  "version": "1.0.1",
+  "version": "1.0.8",
   "description": "A React.js Hook that provides country information for visitors",
-  "main": "/build/index.min.js",
-  "types": "/build/index.d.ts",
+  "main": "build/index.min.js",
+  "types": "build/index.d.ts",
   "scripts": {
-    "build": "tsc && npm run build:minify",
-    "build:minify": "terser build/index.js -o build/index.min.js -c -m && terser build/data.js -o build/data.min.js -c -m",
+    "build": "tsc && npm run build:minify && npm run cleanup",
+    "build:minify": "terser build/index.js -o build/index.min.js -c -m && terser build/data.js -o build/data.min.js -c -m && node scripts/fix-imports.js",
+    "cleanup": "rimraf build/index.js build/data.js",
     "prepare": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@types/react": "^18.0.0",
     "typescript": "^4.9.0",
-    "terser": "^5.24.0"
+    "terser": "^5.24.0",
+    "rimraf": "^5.0.5"
   }
 }

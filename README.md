@@ -8,6 +8,8 @@ A React.js Hook that provides country information for visitors based on their ti
 npm install react-country-hook
 # or
 yarn add react-country-hook
+# or
+bun add react-country-hook
 ```
 
 ## Usage
@@ -18,15 +20,15 @@ yarn add react-country-hook
 import { useCountry } from "react-country-hook";
 
 function MyComponent() {
-  const country = useCountry();
+  const { name, callCode, timezone } = useCountry();
 
-  if (!country) return <div>Loading...</div>;
+  if (!name) return <div>Loading...</div>;
 
   return (
     <div>
-      <h1>Your Country: {country.name}</h1>
-      <p>Phone Code: +{country.callCode}</p>
-      <p>Timezone: {country.timezone}</p>
+      <h1>Your Country: {name}</h1>
+      <p>Phone Code: +{callCode}</p>
+      <p>Timezone: {timezone}</p>
     </div>
   );
 }
@@ -39,10 +41,13 @@ import { useCountry } from "react-country-hook";
 
 function MyComponent() {
   // Search by country name
-  const countryByName = useCountry({ name: "United States" });
+  const countryByName = useCountry({ name: "Germany" });
+
+  // Search by Arabic country name
+  const countryByArabicName = useCountry({ nameAr: "العراق" });
 
   // Search by phone code
-  const countryByPhone = useCountry({ callCode: 1 });
+  const countryByPhone = useCountry({ callCode: "1" });
 
   // Search by timezone
   const countryByTimezone = useCountry({ timezone: "America/New_York" });
@@ -52,18 +57,44 @@ function MyComponent() {
 }
 ```
 
+### Using Default Country
+
+You can specify a default country that will be used if no country is found matching the search criteria. The default can be specified using any of these values:
+
+- Country name (in English or Arabic)
+- Call code
+- Flag code
+- Timezone
+
+```jsx
+import { useCountry } from "react-country-hook";
+
+function MyComponent() {
+  // Using default country by name
+  const countryWithDefault = useCountry({
+    timezone: "Asia/Baghdad",
+  });
+
+  // Using default country by flag code
+  const countryWithDefaultFlag = useCountry({
+    name: "NonExistentCountry",
+    default: "US",
+  });
+}
+```
+
 ## Return Data Structure
 
 The hook returns a country object with the following properties:
 
 ```typescript
-interface DataType {
+interface CountryType {
   name: string; // Country name in English
   nameAr: string; // Country name in Arabic
   timezone: string; // Country timezone
   flagCode: string; // Two-letter country code
-  prefix: number; // Phone number prefix
-  callCode: number; // International calling code
+  prefix: string; // Phone number prefix
+  callCode: string; // International calling code
   phoneMax: number; // Maximum phone number length
   phoneMin: number; // Minimum phone number length
 }
@@ -74,31 +105,14 @@ interface DataType {
 You can search for a country using any of these properties:
 
 ```typescript
-interface FindProps {
+interface PropsType {
   name?: string;
   nameAr?: string;
   timezone?: string;
   flagCode?: string;
-  prefix?: number;
-  callCode?: number;
-  phoneMax?: number;
-  phoneMin?: number;
-}
-```
-
-## Error Handling
-
-The hook returns `null` if no country is found matching the criteria. Always check for null before using the returned data:
-
-```jsx
-function MyComponent() {
-  const country = useCountry({ name: "NonExistentCountry" });
-
-  if (!country) {
-    return <div>Country not found</div>;
-  }
-
-  return <div>Found: {country.name}</div>;
+  prefix?: string;
+  callCode?: string;
+  default?: string;
 }
 ```
 

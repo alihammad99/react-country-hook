@@ -1,18 +1,20 @@
-export type FindProps = {
+export type PropsType = {
   name?: string;
   nameAr?: string;
-  code?: string;
   timezone?: string;
   flagCode?: string;
+  prefix?: string;
+  callCode?: string;
+  default?: string;
 };
 
-export type DataType = {
+export type CountryType = {
   name: string;
   nameAr: string;
   timezone: string;
   flagCode: string;
+  prefix: string;
+  callCode: string;
   phoneMax: number;
   phoneMin: number;
-  prefix: number;
-  callCode: number;
 };
