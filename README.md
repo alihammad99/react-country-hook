@@ -1,6 +1,6 @@
 # React Country Hook
 
-A React.js Hook that provides country information for visitors based on their timezone or custom search criteria.
+A React.js Hook that provides comprehensive information for 196 countries based on visitors' timezone or custom search criteria. Easily access country names (in English and Arabic), phone codes, timezones, and more.
 
 ## Installation
 
@@ -110,7 +110,6 @@ interface PropsType {
   timezone?: string;
   flagCode?: string;
   callCode?: string;
-  default?: string;
 }
 ```
 
